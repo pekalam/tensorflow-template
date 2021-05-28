@@ -12,6 +12,7 @@ def _load_org_config(model=None):
     global org_cfg
     with initialize(config_path='conf'):
         org_cfg = compose(config_name="config", overrides=['model='+model] if model is not None else [])
+        OmegaConf.set_struct(org_cfg, True)
 
 
 def _load_cfg_from_argv():
@@ -20,6 +21,7 @@ def _load_cfg_from_argv():
     if len(custom_path) > 0:
         with initialize(config_path=custom_path[0]):
             cfg = compose(config_name="config")
+            OmegaConf.set_struct(cfg, True)
             model = cfg.model.name
     absoulute_config_path = [a.split('=')[1] for a in sys.argv if '--absoulute-config-path' in a]
     absolute_config = None

@@ -32,6 +32,7 @@ def get_compatible_config(cfg: DictConfig, org: DictConfig = None):
     #print(org)
     #print(cfg)
     compat_dc = DictConfig(compat)
+    OmegaConf.set_struct(compat_dc, True)
     return compat_dc
 
 def read_experiment_params(artifacts_dir_path):

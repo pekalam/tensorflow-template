@@ -9,4 +9,5 @@ def read_default_config():
     GlobalHydra.instance().clear()
     initialize(config_path="../src/conf")
     cfg = compose(config_name="config")
+    OmegaConf.set_struct(cfg, True)
     return cfg
