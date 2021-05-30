@@ -2,11 +2,22 @@
 
 set -e
 
+custom_branch_name="$1"
+
 if ! [ -d "experiments" ]; then
     mkdir "experiments"
 fi
 
-exp_folder="experiments/$(git branch --show-current)"
+if git branch --show-current2 2> /dev/null; then
+    branch_name=$(git branch --show-current)
+elif [ -n "$custom_branch_name" ]; then
+    branch_name="$custom_branch_name"
+else
+    echo "Enter current branch name"
+    read branch_name
+fi
+
+exp_folder="experiments/$branch_name"
 
 if ! [ -d "$exp_folder" ]; then
     mkdir "$exp_folder"
