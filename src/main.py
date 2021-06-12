@@ -57,6 +57,7 @@ def main(cfg: DictConfig) -> None:
 
 
 def notebook_main(cfg: DictConfig):
+    os.environ['APP_ROOT'] = os.getcwd()
     _load_org_config(cfg.model.name)
     _load_secrets_from_argv()
     main(cfg)
