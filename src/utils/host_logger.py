@@ -65,3 +65,5 @@ class HostLogger:
     def __get_important_str(self, message: str):
         return Back.WHITE + Fore.BLACK + ('info: %s' % message)
 
+
+HostLoggerInstance = HostLogger()
