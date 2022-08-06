@@ -1,12 +1,8 @@
-from colorama import init, reinit
+from colorama import init, reinit, deinit
 from colorama import Fore, Back, Style
 
-__colorama_initialized = False
-if __colorama_initialized == False:
-    init()
-    __colorama_initialized = True
-else:
-    reinit()
+init()
+
 
 class HostLogger:
     _lastValues: dict = {}
@@ -15,6 +11,7 @@ class HostLogger:
         pass
 
     def log_loss(self, val, name: str):
+        reinit()
         lastVal = self._lastValues.get(name)
         if lastVal is None:
             print(self.__get_first_loss_str(val, name))
@@ -26,6 +23,7 @@ class HostLogger:
             print(self.__get_loss_increased_str(val, name))
         
         self._lastValues[name] = val
+        deinit()
 
     def __get_loss_name_str(self, name: str):
         if name is None:
@@ -46,24 +44,30 @@ class HostLogger:
     
 
     def log_warning(self, message: str):
+        reinit()
         print(self.__get_warning_str(message))
+        deinit()
 
     def __get_warning_str(self, message: str):
         return Fore.LIGHTYELLOW_EX + ('warning: %s' % message)
 
     
     def log_info(self, message: str):
+        reinit()
         print(self.__get_info_str(message))
+        deinit()
     
     def __get_info_str(self, message: str):
         return Fore.WHITE + ('info: %s' % message)
     
     
     def log_important(self, message: str):
+        reinit()
         print(self.__get_important_str(message))
+        deinit()
 
     def __get_important_str(self, message: str):
-        return Back.WHITE + Fore.BLACK + ('info: %s' % message)
+        return Fore.BLACK + ('info: %s' % message)
 
 
 HostLoggerInstance = HostLogger()
