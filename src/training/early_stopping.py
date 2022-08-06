@@ -1,5 +1,7 @@
 from typing import Tuple
 
+from utils.host_logger import HostLoggerInstance
+
 
 class EarlyStopping:
     def __init__(self, early_stop_patience, min_delta = None, early_stop_min_delta_patience = None):
@@ -30,25 +32,25 @@ class EarlyStopping:
         if metric_val > self.prev_metric_val:
             self.min_delta_iter = 0
             self.inc_iter += 1
-            print('Early stop loss increased')
+            HostLoggerInstance.log_warning('Early stop loss increased')
             if self.inc_iter == 1:
-                print('Saving checkpoint due to increase of early stop loss')
+                HostLoggerInstance.log_warning('Checkpoint will be saved due to increase of early stop loss')
                 should_checkpoint = True
                 self.inc_start_loss = self.prev_metric_val
             if self.inc_iter > self.early_stop_patience:
                 should_stop = True
-                print('Stopped due to increase of early stop loss')
+                HostLoggerInstance.log_warning('Stopped due to increase of early stop loss')
 
         if self.inc_iter >= 1 and metric_val <= self.inc_start_loss:
             self.inc_iter = 0
             self.inc_start_loss = 0
-            print('saving checkpoint due to decrease of early stop loss')
+            HostLoggerInstance.log_important('saving checkpoint due to decrease of early stop loss')
             should_checkpoint = True
         
 
         if metric_val <= self.prev_metric_val and self.prev_metric_val - metric_val < self.min_delta:
             self.min_delta_iter += 1
-            print('Early stop loss delta < ', self.min_delta)
+            HostLoggerInstance.log_warning('Early stop loss delta < ', self.min_delta)
             if self.min_delta_iter > self.early_stop_min_delta_patience:
                 should_stop = True
                 should_checkpoint = True
